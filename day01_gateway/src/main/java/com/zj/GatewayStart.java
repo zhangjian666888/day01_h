@@ -7,18 +7,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class MyStart {
+public class GatewayStart {
 
     public static void main(String[] args) {
 
-        SpringApplication.run(MyStart.class,args);
+        SpringApplication.run(GatewayStart.class,args);
 
     }
 
     @RequestMapping("/health")
     public String health(){
 
-        System.out.println("==========控制层 健康检查开始==========");
+        System.out.println("==========网关 健康检查开始==========");
 
         return "ok";
 

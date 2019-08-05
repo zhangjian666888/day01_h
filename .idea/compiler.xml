@@ -7,21 +7,26 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="day01_api" />
-        <module name="day01_configure" />
         <module name="day01_controller" />
+        <module name="day01_gateway" />
         <module name="day01_mapper" />
+        <module name="day01_model" />
         <module name="day01_service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="day01_configure" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="day01" options="" />
-      <module name="day01_api" options="-parameters" />
-      <module name="day01_configure" options="-parameters" />
-      <module name="day01_controller" options="-parameters" />
-      <module name="day01_mapper" options="-parameters" />
-      <module name="day01_service" options="-parameters" />
+      <module name="day01_api" options="" />
+      <module name="day01_configure" options="" />
+      <module name="day01_controller" options="" />
+      <module name="day01_mapper" options="" />
+      <module name="day01_model" options="" />
+      <module name="day01_service" options="" />
     </option>
   </component>
 </project>

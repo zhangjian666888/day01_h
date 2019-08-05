@@ -7,6 +7,11 @@
         <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/day01_configure/pom.xml" />
+      </set>
+    </option>
   </component>
   <component name="ProjectResources">
     <resource url="http://mybatis.org/dtd/mybatis-3-config.dtd" location="$USER_HOME$/Desktop/SSM/mybatis/dtd/mybatis-3-config.dtd" />
