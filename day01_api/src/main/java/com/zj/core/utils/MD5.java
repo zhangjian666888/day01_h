@@ -66,4 +66,21 @@ public class MD5 {
         int d2 = n % 16;  
         return hexDigits[d1] + hexDigits[d2];  
     }
+
+    public static void main(String[] args) {
+
+        System.out.println(MD5.encryptPassword("123456","lcg"));
+
+        /*Map<String,String> map=new HashMap<>();
+        map.put("id","645564654");
+        String token = JWTUtils.generateToken(JSON.toJSONString(map));
+
+        System.out.println(token);*/
+
+        /*JSONObject jsonObject = JWTUtils.decodeJwtTocken("eyJhbGciOiJIUzUxMiJ9.eyJjcmVhdGVkIjoxNTY0OTEzMzIzMzU4LCJleHAiOjE1NjQ5MTMzODMsInVzZXJpbmZvIjoie1wiaWRcIjpcIjY0NTU2NDY1NFwifSJ9.iT-NmNBkbjK29t4DLtyJvsAwp770QyYkUpEGB-Lmy-xDVH2NWUtPqQJmovV7PZV46IGPVUMvYMOAaEhbJ6voaA");
+
+        System.out.println(jsonObject.get("id"));*/
+
+    }
+
 }
