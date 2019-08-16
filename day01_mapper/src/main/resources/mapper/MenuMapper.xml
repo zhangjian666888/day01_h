@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.dao.MenuDao">
+
+    <select id="selectMeunByRoleId" resultType="menu">
+
+        select rbm.* from
+        (select bm.* from base_role_menu brm INNER JOIN base_menu bm ON brm.menuId=bm.id where brm.roleId=#{roleId}) rbm
+          where rbm.leval=#{leval} and rbm.parentId=#{parentId}
+
+
+    </select>
+    
+    <select id="selectMenu" resultType="menu">
+
+        select bm.* from base_menu bm where bm.leval=#{leval} and bm.parentId=#{parentId}
+
+    </select>
+
+    <insert id="insertMenu" parameterType="menu">
+
+      insert into base_menu(id,menuName,url,leval,parentId,createTime) values(
+                                                                              #{id},
+                                                                               #{menuName},
+                                                                               #{url},
+                                                                               #{leval},
+                                                                               #{parentId},
+                                                                               now()
+
+                                                                          )
+
+    </insert>
+
+    <update id="updateMenu" parameterType="map">
+        update base_menu
+        <set>
+            <if test="menuName!=null and menuName !=''">menuName=#{menuName},</if>
+            <if test="url!=null and url !=''">url=#{url},</if>
+            updateTime=now()
+        </set>
+        <where>
+            <if test="parentId!=null and parentId!=''">and id=#{parentId}</if>
+        </where>
+    </update>
+
+    <select id="selectMenus" resultType="menu">
+
+      select bm.* from base_menu bm left join base_role_menu brm on bm.id=brm.menuId where brm.roleId=#{roleId}
+
+    </select>
+
+    <delete id="delectMenuAndRole">
+
+      delete from base_role_menu where roleId=#{roleId}
+
+    </delete>
+    
+    <insert id="insertMenuAndRole">
+
+      insert into base_role_menu(roleId,menuId) values
+      <foreach collection="meunId" item="idd" separator=",">
+          (#{roleId},#{idd})
+      </foreach>
+
+    </insert>
+
+    <delete id="delectMenu">
+
+      delete from base_menu where id =#{id}
+
+    </delete>
+
+</mapper>

@@ -17,12 +17,12 @@ spring:
 #                    redis-rate-limiter.replenishRate: 1 #单位时间允许内执行请求的个数
 #                    redis-rate-limiter.burstCapacity: 2 #单位时间内允许向桶中放入令牌的数量
          - id: day01-controller
-           uri: lb://day01-controller
+           uri: http://localhost:8889
            predicates:
-           - Path=/sso/auth/**
+           - Path=/api/**
            - Cookie=authcode, (.*)
            filters:
-             - StripPrefix=2
+             - StripPrefix=1
 #         - id: SSO-SERVER2
 #           uri: lb://SSO-SERVER
 #           predicates:

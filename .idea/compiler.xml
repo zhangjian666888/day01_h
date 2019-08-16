@@ -12,6 +12,7 @@
         <module name="day01_mapper" />
         <module name="day01_model" />
         <module name="day01_service" />
+        <module name="day01_swagger" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -21,12 +22,14 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="day01" options="" />
-      <module name="day01_api" options="" />
+      <module name="day01_api" options="-parameters" />
       <module name="day01_configure" options="" />
-      <module name="day01_controller" options="" />
-      <module name="day01_mapper" options="" />
-      <module name="day01_model" options="" />
-      <module name="day01_service" options="" />
+      <module name="day01_controller" options="-parameters" />
+      <module name="day01_gateway" options="-parameters" />
+      <module name="day01_mapper" options="-parameters" />
+      <module name="day01_model" options="-parameters" />
+      <module name="day01_service" options="-parameters" />
+      <module name="day01_swagger" options="-parameters" />
     </option>
   </component>
 </project>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.dao.UserDao">
+
+    <select id="selectUserByLoginName" parameterType="string" resultType="user">
+
+        select u.*,br.id rid,br.leval rleval from base_user u
+          left join base_user_role bur on u.id=bur.userId
+
+           left join base_role br on br.id=bur.roleId
+
+         where u.loginName=#{loginName}
+
+    </select>
+
+    <insert id="insertUser" parameterType="user">
+
+      insert into base_user(id,userName,loginName,password,sex,tel,photo,email,createTime) values(
+                                                                                            #{id},
+                                                                                            #{username},
+                                                                                            #{loginname},
+                                                                                            #{password},
+                                                                                            #{sex},
+                                                                                            #{tel},
+                                                                                            #{photo},
+                                                                                            #{email}
+                                                                                            now()
+                                                                                        )
+
+    </insert>
+
+    <delete id="deleteUser">
+
+        delete from base_user
+        <where>
+            id in
+            <foreach collection="ids" separator="," item="idd" open="(" close=")">
+                #{idd}
+            </foreach>
+        </where>
+
+    </delete>
+
+    <update id="updateUser" parameterType="user" >
+
+      update base_user set userName=#{username},
+                      loginName=#{loginname},
+                      password=#{password},
+                      sex=#{sex},
+                      tel=#{tel},
+                      photo=#{photo},
+                      updateTime=now()
+                      where id=#{id}
+
+    </update>
+
+    <select id="selectUser" resultType="user">
+
+      select u.*,br.roleName rname,br.miaoShu rdesc,br.id rid,br.leval rleval from base_user u left join base_user_role bur on u.id=bur.userId
+
+      left join base_role br on br.id=bur.roleId
+
+      where u.userName like '%${username}%'
+      <if test="startDate!='null' and startDate!='' and endDate!='null' and endDate!=''">
+          and u.createTime between #{startDate} and #{endDate}
+      </if>
+      <if test="sex==1 or sex==2">
+          and u.sex = #{sex}
+      </if>
+
+    </select>
+
+    <select id="selectUserByRoleId" resultType="user">
+
+      select bu.* from base_user bu left join base_user_role bur on bu.id=bur.roleId where bur.roleId=#{rid}
+
+    </select>
+
+    <insert id="insertRoleAndUser">
+
+      insert into base_user_role(userId,roleId) values(#{uid},#{rid})
+
+    </insert>
+    
+    <select id="selectRoleAndUser" resultType="user">
+
+      select bu.*,bur.roleId rid from base_user bu left join base_user_role bur on bu.id=bur.userId where bur.userId=#{uid}
+                                                                                          <!-- <if test="rid!=null and rid!=''">
+                                                                                               and bur.roleId=#{rid}
+                                                                                           </if>-->
+
+
+    </select>
+
+    <update id="updateUserAndRoleTwo">
+
+        update base_user_role set roleId=#{roleId} where roleId=1000000239563434 and userId=#{userId}
+
+    </update>
+
+    <update id="updateUserAndRole">
+
+      update base_user_role set roleId=1000000239563434 where roleId=#{roleId} and userId=#{userId}
+
+    </update>
+
+    <select id="selectUserByTel" parameterType="string" resultType="user">
+
+      select * from base_user where tel=#{tel}
+
+    </select>
+
+    <select id="selectUserByEmail" parameterType="string" resultType="user">
+
+      select * from base_user where email=#{email}
+
+    </select>
+
+</mapper>

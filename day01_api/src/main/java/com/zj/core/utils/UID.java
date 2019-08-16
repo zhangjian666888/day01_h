@@ -25,14 +25,14 @@ public class UID {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		for(int i=0;i<10;i++){
+		/*for(int i=0;i<10;i++){
 			System.out.println(next());
 		}
 		System.out.println(System.currentTimeMillis());
 		
-		System.out.println(String.format("%1$04d",23));
+		System.out.println(String.format("%1$04d",23));*/
 
-        System.out.println (UID.getUUID16 ());
+        System.out.println (Integer.valueOf(UID.getUUIDOrder ()));
 		
 	}
 
@@ -65,4 +65,7 @@ public class UID {
     }
 
 	public static SimpleDateFormat df = new SimpleDateFormat("yyMMddHHmmssSSS");
+
+
+
 }

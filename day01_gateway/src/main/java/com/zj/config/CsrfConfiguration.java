@@ -14,8 +14,6 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 /**
- * 作者: LCG
- * 日期: 2019/7/24 20:07
  * 描述: 解决跨域的问题
  */
 @Configuration
@@ -25,7 +23,7 @@ public class CsrfConfiguration {
     private static final String ALLOWED_HEADERS = "x-requested-with,Content-Type,Authorization,credential,token";
     private static final String ALLOWED_METHODS = "*";
     //表示允许跨域的源
-    private static final String ALLOWED_ORIGIN = "http://localhost:8080";
+    private static final String ALLOWED_ORIGIN = "https://localhost:8080";
     private static final String ALLOWED_Expose = "*";
     private static final String MAX_AGE = "18000L";
 

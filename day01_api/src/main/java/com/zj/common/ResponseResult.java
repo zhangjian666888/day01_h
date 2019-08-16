@@ -1,6 +1,10 @@
 package com.zj.common;
 
+import com.github.pagehelper.PageInfo;
 import lombok.Data;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * 作者：LCG
@@ -30,5 +34,12 @@ public class ResponseResult {
     //选中的需要回显的菜单ID
     private Long[] menuIds;
 
+    private PageInfo pageInfo;
+
+    //设置横向坐标
+    private List<String> keys;
+
+    //设置纵向坐标
+    private List<String> values;
 
 }

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.dao.RoleDao">
+
+    <select id="selectRoleByUserId" resultType="role">
+
+      select br.* from base_role br left join base_user_role bur
+      on br.id=bur.roleId where bur.userId=#{uid}
+
+    </select>
+
+    <!--<resultMap id="selUserAndRole" type="role">
+        <id property="id" column="id"/>
+        <result property="roleName" column="roleName"/>
+        <result property="miaoShu" column="miaoShu"/>
+        <collection property="user" ofType="user">
+            <id property="id" column="uid"/>
+            <result property="username" column="username"/>
+            <result property="loginname" column="loginname"/>
+            <result property="password" column="password"/>
+            <result property="tel" column="tel"/>
+            <result property="sex" column="sex"/>
+        </collection>
+    </resultMap>-->
+
+    <select id="selectRole" parameterType="string" resultType="role">
+
+      select br.*,group_concat(bu.userName) userName
+
+      from base_role br left join base_user_role bur on br.id=bur.roleId
+      left join base_user bu on bu.id=bur.userId
+        where br.id!=1000000239563434 and br.roleName like '%${roleName}%' group by br.id
+
+    </select>
+
+    <insert id="insertRole" parameterType="role">
+
+      insert into base_role(id,roleName,miaoShu,createTime) values(
+                                                                   #{id},
+                                                                   #{roleName},
+                                                                   #{miaoShu},
+                                                                   now()
+                                                               )
+
+    </insert>
+
+    <delete id="deleteRole">
+
+        delete from base_role
+        <where>
+            id in
+            <foreach collection="ids" separator="," open="(" close=")" item="idd">
+                #{idd}
+            </foreach>
+        </where>
+
+    </delete>
+
+    <update id="updateRole" parameterType="role">
+
+      update base_role set roleName=#{roleName},
+                           miaoShu=#{miaoShu},
+                           updateTime=now()
+      where id=#{id}
+
+    </update>
+
+    <select id="selectAllRole" resultType="role">
+
+      select * from base_role where id!=1000000239563434
+
+    </select>
+
+</mapper>

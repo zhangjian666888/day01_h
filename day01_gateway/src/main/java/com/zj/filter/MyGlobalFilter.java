@@ -6,6 +6,9 @@ import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.data.redis.connection.RedisStringCommands;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -14,11 +17,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Component
-public class MyGlobalFilter {
+public class MyGlobalFilter implements GlobalFilter {
     //设置不过滤的路径
 
     @Value("${my.auth.urls}")
@@ -28,7 +32,7 @@ public class MyGlobalFilter {
     private String loginpage;
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String,String> redisTemplate;
 
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         //获取请求
@@ -41,6 +45,8 @@ public class MyGlobalFilter {
         //验证当前路径是否是公共资源路径也就是不需要进行登录校验的路径
         List<String> strings = Arrays.asList(urls);
         if(strings.contains(currentpath)){
+            return chain.filter(exchange);
+        }else if(currentpath.indexOf("sel")>0){
             return chain.filter(exchange);
         }else{
             //获取请求头中的token
@@ -66,13 +72,24 @@ public class MyGlobalFilter {
             //获取用户Id
             String userId = jsonObject.get("id").toString();
             //校验用户有没有访问该资源的权限
-            boolean isok=redisTemplate.opsForHash().hasKey("USERDATAAUTH"+userId,currentpath);
+
+            int i = currentpath.indexOf("?");
+
+            if(i > 0){
+
+                currentpath = currentpath.substring(0,i);
+
+            }
+
+            boolean isok = redisTemplate.opsForHash().hasKey("USERDATAAUTH"+userId,currentpath);
+
+            /*=redisTemplate.opsForHash().hasKey("USERDATAAUTH"+userId,currentpath);*/
             //isok=true说明访问资源的权限
             if(isok){
                 ///验证当前路径不是需要进行登录校验的路径，直接放过
                 return chain.filter(exchange);
             }else{
-                throw new RuntimeException("不能访问该资源 !");
+                throw new RuntimeException("您没有权限,不能访问该资源 !");
             }
         }
     }

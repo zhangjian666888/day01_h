@@ -69,7 +69,7 @@ public class MD5 {
 
     public static void main(String[] args) {
 
-        System.out.println(MD5.encryptPassword("123456","lcg"));
+       /* System.out.println(MD5.encryptPassword("123456", "zj"));*/
 
         /*Map<String,String> map=new HashMap<>();
         map.put("id","645564654");
