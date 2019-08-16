@@ -385,32 +385,46 @@ public class UserController {
 
         ResponseResult responseResult = ResponseResult.getResponseResult();
 
-        MimeMessage message=mailSender.createMimeMessage();
+        User userByEmail = userService.findUserByEmail(email);
 
-        String s = VerifyCodeUtils.generateVerifyCode(4);
+        if(userByEmail!=null){
 
-        redisTemplate.opsForValue().set("emailcode"+email,s,5, TimeUnit.MINUTES);
+            MimeMessage message=mailSender.createMimeMessage();
 
-        try {
+            String s = VerifyCodeUtils.generateVerifyCode(4);
 
-            //true表示需要创建一个multipart message
-            MimeMessageHelper helper=new MimeMessageHelper(message,true);
+            redisTemplate.opsForValue().set("emailcode"+email,s,5, TimeUnit.MINUTES);
 
-            helper.setFrom(from);
+            try {
 
-            helper.setTo(email);
+                //true表示需要创建一个multipart message
+                MimeMessageHelper helper=new MimeMessageHelper(message,true);
 
-            helper.setSubject("密码重置");
+                helper.setFrom(from);
 
-            helper.setText("<html><head></head><body>验证码为:"+s+",5分钟后过期。</body></html>",true);
+                helper.setTo(email);
 
-            mailSender.send(message);
+                helper.setSubject("密码重置");
 
-            responseResult.setCode(200);
+                helper.setText("<html><head></head><body>验证码为:"+s+",5分钟后过期。</body></html>",true);
 
-        }catch (Exception e){
+                mailSender.send(message);
+
+                responseResult.setCode(200);
+
+            }catch (Exception e){
+
+                responseResult.setCode(500);
+
+                responseResult.setError("发送失败!");
+
+            }
+
+        }else{
 
             responseResult.setCode(500);
+
+            responseResult.setError("该邮箱没有绑定用户!");
 
         }
 
