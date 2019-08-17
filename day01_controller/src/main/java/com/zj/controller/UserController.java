@@ -342,6 +342,37 @@ public class UserController {
 
     }
 
+    @ApiOperation("这是用户接口中通过邮箱查询用户的方法。")
+    @ApiImplicitParam(
+            name = "email",
+            value = "接收要查询的邮箱。",
+            dataType = "String",
+            dataTypeClass = String.class
+    )
+    @RequestMapping("/selUserByEmail")
+    public ResponseResult selUserByEmail(String email){
+
+        ResponseResult responseResult = ResponseResult.getResponseResult();
+
+        User userByEmail = userService.findUserByEmail(email);
+
+        if(userByEmail==null){
+
+            responseResult.setCode(200);
+
+        }else{
+
+            responseResult.setCode(500);
+
+            responseResult.setError("您输入的邮箱已被绑定!");
+
+        }
+
+        return responseResult;
+
+    }
+
+    @ApiOperation("这是用户接口中导出数据的方法。")
     @RequestMapping("/exportDate")
     public ResponseResult ExportDate(@RequestBody User[] userList) throws IOException {
 
@@ -357,6 +388,13 @@ public class UserController {
 
     }
 
+    @ApiOperation("这是用户接口中通过手机号查询用户。")
+    @ApiImplicitParam(
+            name = "tel",
+            value = "接收要查询的手机号。",
+            dataType = "String",
+            dataTypeClass = String.class
+    )
     @RequestMapping("/selUserByTel")
     public ResponseResult selUserByTel(String tel){
 
@@ -380,6 +418,13 @@ public class UserController {
 
     }
 
+    @ApiOperation("这是用户接口中通过邮箱发送验证码的方法。")
+    @ApiImplicitParam(
+            name = "email",
+            value = "接收要发送的邮箱。",
+            dataType = "String",
+            dataTypeClass = String.class
+    )
     @RequestMapping("/selEmail")
     public ResponseResult selEmail(String email){
 
@@ -431,6 +476,21 @@ public class UserController {
         return responseResult;
     }
 
+    @ApiOperation("这是用户接口中比对邮箱中验证码的方法。")
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "code",
+                    value = "存储验证码",
+                    dataType = "String",
+                    dataTypeClass = String.class
+            ),
+            @ApiImplicitParam(
+                    name = "email",
+                    value = "接收邮箱",
+                    dataType = "String",
+                    dataTypeClass = String.class
+            )
+    })
     @RequestMapping("/selEmailCode")
     public ResponseResult selEmailCode(String code,String email){
 
@@ -467,6 +527,21 @@ public class UserController {
 
     }
 
+    @ApiOperation("这是用户接口中通过邮箱验证修改密码的方法。")
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "password",
+                    value = "接收要修改的密码。",
+                    dataType = "String",
+                    dataTypeClass = String.class
+            ),
+            @ApiImplicitParam(
+                    name = "email",
+                    value = "接收要邮箱。",
+                    dataType = "String",
+                    dataTypeClass = String.class
+            ),
+    })
     @RequestMapping("selUpdatePassword")
     public ResponseResult selUpdatePassword(String password,String email){
 

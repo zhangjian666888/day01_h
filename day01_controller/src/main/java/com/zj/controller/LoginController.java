@@ -2,8 +2,6 @@ package com.zj.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.zj.common.ResponseResult;
-import com.zj.core.CommonUtils;
-import com.zj.core.utils.AESUtils;
 import com.zj.core.utils.JWTUtils;
 import com.zj.core.utils.MD5;
 import com.zj.core.utils.UID;
@@ -138,6 +136,7 @@ public class LoginController {
      * @param userByLoginName
      * @return
      */
+    @ApiOperation("这是两种登陆的公共代码。")
     public ResponseResult loginCommen(User userByLoginName){
 
         ResponseResult responseResult = ResponseResult.getResponseResult();
@@ -243,6 +242,14 @@ public class LoginController {
         return responseResult;
     }
 
+    @ApiOperation("这是通过手机号登陆时，发送验证码的方法。")
+    @ApiImplicitParam(
+            name = "myPhone",
+            value = "接收要给发送验证码的手机号。",
+            dataType = "String",
+            dataTypeClass = String.class
+
+    )
     @RequestMapping("/selMessage")
     public ResponseResult sendMessage(String myPhone){
 
@@ -275,6 +282,21 @@ public class LoginController {
      * @param tel
      * @return
      */
+    @ApiOperation("通过手机号接收验证码来登陆的方法。")
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "code",
+                    value = "接收手机收到的验证码。",
+                    dataType = "String",
+                    dataTypeClass = String.class
+            ),
+            @ApiImplicitParam(
+                    name = "tel",
+                    value = "接收要登录的手机号。",
+                    dataType = "String",
+                    dataTypeClass = String.class
+            )
+    })
     @RequestMapping("/selUserByCode")
     public ResponseResult selUserByCode(String code,String tel){
 
