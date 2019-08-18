@@ -1,6 +1,7 @@
 package com.zj.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.zj.common.ResponseResult;
 import com.zj.core.utils.UID;
 import com.zj.model.Role;
 import com.zj.service.RoleService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 @Api(tags = "这是一个角色的接口")
@@ -115,5 +117,19 @@ public class RoleController {
         return allRole;
 
     }
+
+   /* @ApiOperation("这是角色接口中下载模板的方法。")
+    @RequestMapping("/seldownRoleModel")
+    public ResponseResult downRoleModel() throws IOException {
+
+        ResponseResult  responseResult = new ResponseResult();
+
+        roleService.downRoleModel();
+
+        responseResult.setCode(200);
+
+        return responseResult;
+
+    }*/
 
 }

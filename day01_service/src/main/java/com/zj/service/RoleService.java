@@ -7,6 +7,7 @@ import com.zj.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
 import java.util.List;
 
 @Service
@@ -86,5 +87,47 @@ public class RoleService {
         return roles;
 
     }
+
+    /**
+     * 下载模板
+     * @throws IOException
+     *//*
+    public void downRoleModel() throws IOException {
+
+        File file = new File("E:\\1612cshixun1\\day01\\day01_service\\src\\main\\resources\\role.xlsx");
+
+        byte []b=new byte[(int)file.length()];
+
+        FileInputStream fis=new FileInputStream(file);
+
+        FileOutputStream fos=new FileOutputStream("F:\\新建文件夹");
+
+        BufferedInputStream bis=new BufferedInputStream(fis);
+
+        BufferedOutputStream bos=new BufferedOutputStream(fos);
+
+        int i=bis.read();
+
+        while(i!=0){
+
+            i=bis.read();
+
+            bos.write(b);
+
+        }
+
+        bos.flush();
+
+        fos.flush();
+
+        bos.close();
+
+        fos.close();
+
+        bis.close();
+
+        fis.close();
+
+    }*/
 
 }
