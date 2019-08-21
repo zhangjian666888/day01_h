@@ -436,10 +436,6 @@ public class UserController {
 
             MimeMessage message=mailSender.createMimeMessage();
 
-            String s = VerifyCodeUtils.generateVerifyCode(4);
-
-            redisTemplate.opsForValue().set("emailcode"+email,s,5, TimeUnit.MINUTES);
-
             try {
 
                 //true表示需要创建一个multipart message
@@ -451,9 +447,11 @@ public class UserController {
 
                 helper.setSubject("密码重置");
 
-                helper.setText("<html><head></head><body>验证码为:"+s+",5分钟后过期。</body></html>",true);
+                helper.setText("<html><head></head><body>请点击这个链接修改密码:<a href='https://localhost:8080/view/shouye/user/updatePassword?ss=2&email="+email+"'>https://localhost:8080/view/shouye/user/updatePassword?ss=2</a>,5分钟后过期。</body></html>",true);
 
                 mailSender.send(message);
+
+                redisTemplate.opsForValue().set(email,email);
 
                 responseResult.setCode(200);
 
@@ -476,7 +474,7 @@ public class UserController {
         return responseResult;
     }
 
-    @ApiOperation("这是用户接口中比对邮箱中验证码的方法。")
+/*    @ApiOperation("这是用户接口中比对邮箱中验证码的方法。")
     @ApiImplicitParams({
             @ApiImplicitParam(
                     name = "code",
@@ -525,7 +523,7 @@ public class UserController {
 
         return responseResult;
 
-    }
+    }*/
 
     @ApiOperation("这是用户接口中通过邮箱验证修改密码的方法。")
     @ApiImplicitParams({
@@ -547,15 +545,29 @@ public class UserController {
 
         ResponseResult responseResult = ResponseResult.getResponseResult();
 
-        User userByEmail = userService.findUserByEmail(email);
+        String s = redisTemplate.opsForValue().get(email);
 
-        String zj = MD5.encryptPassword(password, "zj");
+        if(s!=null){
 
-        userByEmail.setPassword(zj);
+            User userByEmail = userService.findUserByEmail(email);
 
-        userService.changeUser(userByEmail);
+            String zj = MD5.encryptPassword(password, "zj");
 
-        responseResult.setCode(200);
+            userByEmail.setPassword(zj);
+
+            userService.changeUser(userByEmail);
+
+            redisTemplate.delete(email);
+
+            responseResult.setCode(200);
+
+        }else{
+
+            responseResult.setCode(500);
+
+            responseResult.setError("你做了违规操作!");
+
+        }
 
         return responseResult;
 
